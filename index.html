@@ -6,7 +6,6 @@
 
     <title>🔱 KASHI YATRA 2026 </title>
     
-    <!-- Premium Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Marcellus&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -96,6 +95,7 @@
             z-index: 0;
             pointer-events: none;
             opacity: 0.7;
+            transform: translateZ(0); /* Hardware Acceleration */
         }
 
         /* --- HERO BANNER --- */
@@ -230,13 +230,14 @@
             padding: 40px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
             transition: var(--transition-smooth);
+            transform: translateZ(0); /* Anti-lag optimization */
         }
 
         .glass-card:hover {
             border-color: var(--border-hover);
             box-shadow: 0 30px 60px rgba(242, 186, 67, 0.1);
             background: var(--bg-card-hover);
-            transform: translateY(-4px);
+            transform: translateY(-4px) translateZ(0);
         }
 
         .spec-table {
@@ -695,6 +696,182 @@
             transform: translateY(0);
             filter: blur(0);
         }
+
+        /* ========================================================
+           ✨ UPGRADED ENHANCEMENTS: MARQUEE STRIP, PROGRESS & VIDEO
+           ======================================================== */
+        
+        /* Smooth Right-to-Left Band Strip Marquee with Dismiss & Color Priority */
+        .top-update-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 9999;
+            background: rgba(14, 8, 20, 0.92);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border-clinical);
+            height: 42px;
+            display: flex;
+            align-items: center;
+            font-size: 0.85rem;
+            letter-spacing: 0.08em;
+            color: var(--diya-glow);
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.8);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            overflow: hidden;
+        }
+
+        /* PRIORITY COLOR OPTIONS (Change data-priority="red", "gold", "emerald", or "blue" in HTML) */
+        .top-update-bar[data-priority="gold"] {
+            border-bottom-color: var(--diya-gold);
+            box-shadow: 0 4px 20px rgba(242, 186, 67, 0.25);
+        }
+        .top-update-bar[data-priority="red"] {
+            background: rgba(45, 8, 15, 0.95);
+            border-bottom-color: #ff3b56;
+            color: #ffe6eb;
+            box-shadow: 0 4px 20px rgba(255, 59, 86, 0.35);
+        }
+        .top-update-bar[data-priority="emerald"] {
+            background: rgba(6, 28, 18, 0.95);
+            border-bottom-color: #10b981;
+            color: #d1fae5;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+        }
+        .top-update-bar[data-priority="blue"] {
+            background: rgba(8, 20, 38, 0.95);
+            border-bottom-color: #38bdf8;
+            color: #e0f2fe;
+            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.3);
+        }
+
+        /* Scrolling Marquee Engine */
+        .marquee-track {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            white-space: nowrap;
+            mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+        }
+
+        .marquee-content {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marqueeRightToLeft 22s linear infinite;
+            will-change: transform;
+        }
+
+        .top-update-bar:hover .marquee-content {
+            animation-play-state: paused;
+        }
+
+        @keyframes marqueeRightToLeft {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+
+        .pulse-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: currentColor;
+            border-radius: 50%;
+            margin: 0 6px;
+            box-shadow: 0 0 8px currentColor;
+            animation: lockPulse 1.2s infinite alternate ease-in-out;
+        }
+
+        /* Dismiss/Close Button */
+        .close-notif-btn {
+            background: transparent;
+            border: none;
+            color: inherit;
+            font-size: 1.4rem;
+            padding: 0 16px;
+            cursor: pointer;
+            line-height: 1;
+            opacity: 0.7;
+            transition: var(--transition-smooth);
+            z-index: 2;
+        }
+
+        .close-notif-btn:hover {
+            opacity: 1;
+            transform: scale(1.2);
+            text-shadow: 0 0 10px currentColor;
+        }
+
+        /* Waiting Period Progress Bar Section */
+        .progress-wrapper {
+            margin-top: 35px;
+            padding-top: 25px;
+            border-top: 1px dashed rgba(242, 186, 67, 0.2);
+            text-align: left;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+        }
+
+        .progress-percent-badge {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.1rem;
+            color: var(--diya-gold);
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(242, 186, 67, 0.4);
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 12px;
+            background: rgba(6, 4, 9, 0.9);
+            border: 1px solid rgba(242, 186, 67, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            padding: 2px;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.8);
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--kashi-crimson), var(--diya-gold), var(--diya-glow));
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(242, 186, 67, 0.5);
+            transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Responsive YouTube Video Player Card */
+        .video-player-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(242, 186, 67, 0.25);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+            background: var(--bg-deep);
+        }
+
+        .video-player-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
     </style>
 </head>
 <body>
@@ -721,10 +898,19 @@
 
 
 
-    <!-- RIVER DIYA EMBER PARTICLES -->
     <canvas class="ambient-canvas" id="ambientEngine"></canvas>
 
-    <!-- SACRED KASHI BANNER TOP -->
+    <div class="top-update-bar" id="topNotificationBar" data-priority="gold">
+        <div class="marquee-track">
+            <span class="marquee-content">
+                <span class="pulse-dot"></span> 🔔 LATEST UPDATE: Kashi Yatra 2026 Masterplan Active | All Routes & Progress Tracked Live &nbsp;&nbsp;&bull;&nbsp;&nbsp; 
+                <span class="pulse-dot"></span> 🔱 OM TRYAMBAKAM YAJAMAHE: Immerse in Sacred Meditation Before Departure &nbsp;&nbsp;&bull;&nbsp;&nbsp;
+                <span class="pulse-dot"></span> 🚂 IRCTC Train Slots Locked Untwisted Until September 2026 &nbsp;&nbsp;&bull;&nbsp;&nbsp;
+            </span>
+        </div>
+        <button class="close-notif-btn" onclick="dismissNotificationStrip()" title="Dismiss Notification">&times;</button>
+    </div>
+
     <header class="hero">
         <div class="mantra-banner">॥ नमः पार्वती पतये हर हर महादेव ॥</div>
         <h1 class="hero-title">KASHI YATRA</h1>
@@ -736,7 +922,18 @@
         </a>
     </header>
 
-    <!-- COUNTDOWN CLOCK -->
+    <section id="sacred-media" class="scroll-reveal">
+        <div class="section-header">
+            <h2>Sacred Video Experience</h2>
+            <p>Immerse your spirit while waiting for the journey</p>
+        </div>
+        <div class="glass-card" style="max-width: 850px; margin: 0 auto; padding: 25px;">
+            <div class="video-player-container">
+                <iframe src="https://www.youtube.com/embed/gdKm1fZzMgI?rel=0" title="Om Tryambakam Yajamahe | Shiva Maha Mantra" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
     <section id="clocks" class="scroll-reveal">
         <div class="section-header">
             <h2>The journey starts On</h2>
@@ -750,10 +947,19 @@
                 <div class="digit-box"><div class="digit-number" id="mins-box">00</div><div class="digit-label">Minutes</div></div>
                 <div class="digit-box"><div class="digit-number" id="secs-box">00</div><div class="digit-label">Seconds</div></div>
             </div>
+
+            <div class="progress-wrapper">
+                <div class="progress-header">
+                    <span>Waiting Period Progress (Since 28 May)</span>
+                    <span class="progress-percent-badge" id="waitingProgressText">0%</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" id="waitingProgressBar"></div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- EXPEDITION COORDINATES -->
     <section id="parameters" class="scroll-reveal">
         <div class="section-header">
             <h2>Trip Plan Basics</h2>
@@ -784,7 +990,6 @@
         </div>
     </section>
 
-    <!-- INDIAN RAILWAYS OUTBOUND PATH -->
     <section id="vaults" class="scroll-reveal">
         <div class="section-header">
             <h2>Outbound Train Route</h2>
@@ -812,7 +1017,6 @@
         </div>
     </section>
 
-    <!-- SCHEDULE TIMELINE -->
     <section id="timeline" class="scroll-reveal">
         <div class="section-header">
             <h2>The Trip Schedule</h2>
@@ -871,7 +1075,6 @@
         </div>
     </section>
 
-    <!-- INDIAN RAILWAYS RETURN PATH -->
     <section id="vaults-return" class="scroll-reveal">
         <div class="section-header">
             <h2>Return Train Route</h2>
@@ -899,7 +1102,6 @@
         </div>
     </section>
 
-    <!-- SHLOKAS & MOTIVATION CODEX -->
     <section id="codex" class="scroll-reveal">
         <div class="section-header">
             <h2>Daily Mantras & Quotes</h2>
@@ -921,7 +1123,6 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer>
         <div class="footer-line"></div>
         <h3 class="sacred-font" style="font-size: 1.2rem; letter-spacing: 0.12em;">🔱 KASHI YATRA 2026 🔱</h3>
@@ -935,7 +1136,6 @@
         <p class="footer-end">"Some journeys begin long before the train moves."</p>
     </footer>
 
-    <!-- LOGIC SCRIPTS -->
     <script>
         const RuntimeConfig = {
             vaultEpoch: new Date('September 1, 2026 00:00:00').getTime(),
@@ -955,7 +1155,18 @@
             initClockTicker();
             initMantraLoop();
             initScrollEffects();
+            initWaitingPeriodProgress();
         });
+
+        // DISMISS/HIDE NOTIFICATION BAR FUNCTION
+        function dismissNotificationStrip() {
+            const strip = document.getElementById('topNotificationBar');
+            if (strip) {
+                strip.style.opacity = '0';
+                strip.style.transform = 'translateY(-100%)';
+                setTimeout(() => strip.style.display = 'none', 400);
+            }
+        }
 
         // LOCK CONTROLLER
         function checkLocks() {
@@ -969,11 +1180,12 @@
             }
         }
 
-        // FLOATING RIVER DIYA GLOW PARTICLES
+        // FLOATING RIVER DIYA GLOW PARTICLES (OPTIMIZED FOR ZERO LAG & SMOOTH 60FPS)
         function initEmbersEngine() {
             const canvas = document.getElementById('ambientEngine');
             const ctx = canvas.getContext('2d');
             let particles = [];
+            let isRunning = true;
 
             function resize() {
                 canvas.width = window.innerWidth;
@@ -982,7 +1194,10 @@
             window.addEventListener('resize', resize);
             resize();
 
-            for (let i = 0; i < 50; i++) {
+            // Automatically scale particle count for mobile screens to eliminate lag
+            const particleCount = window.innerWidth < 768 ? 28 : 50;
+
+            for (let i = 0; i < particleCount; i++) {
                 particles.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
@@ -994,6 +1209,7 @@
             }
 
             function draw() {
+                if (!isRunning) return;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 particles.forEach(p => {
                     p.y += p.vy;
@@ -1009,6 +1225,17 @@
                 });
                 requestAnimationFrame(draw);
             }
+
+            // Pause rendering when browser tab is inactive to preserve battery & prevent memory glitches
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    isRunning = false;
+                } else {
+                    isRunning = true;
+                    requestAnimationFrame(draw);
+                }
+            });
+
             draw();
         }
 
@@ -1043,6 +1270,39 @@
             }
             refresh();
             setInterval(refresh, 1000);
+        }
+
+        // WAITING PERIOD PROGRESS CALCULATOR (No Decimals, Round Figures Only)
+        function initWaitingPeriodProgress() {
+            const startTime = new Date('May 28, 2026 00:00:00').getTime();
+            const endTime = new Date('November 20, 2026 18:00:00').getTime();
+            const bar = document.getElementById('waitingProgressBar');
+            const label = document.getElementById('waitingProgressText');
+
+            function updateProgress() {
+                const now = Date.now();
+                if (now <= startTime) {
+                    if (bar) bar.style.width = '0%';
+                    if (label) label.textContent = '0%';
+                    return;
+                }
+                if (now >= endTime) {
+                    if (bar) bar.style.width = '100%';
+                    if (label) label.textContent = '100%';
+                    return;
+                }
+
+                const totalWait = endTime - startTime;
+                const elapsedWait = now - startTime;
+                // Round strictly to integer without decimal places
+                const percentage = Math.round((elapsedWait / totalWait) * 100);
+
+                if (bar) bar.style.width = percentage + '%';
+                if (label) label.textContent = percentage + '%';
+            }
+
+            updateProgress();
+            setInterval(updateProgress, 60000);
         }
 
         // TEXT LOOP FOR MANTRAS
@@ -1095,5 +1355,3 @@
     </script>
 </body>
 </html>
-
-
